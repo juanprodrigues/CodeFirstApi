@@ -1,6 +1,6 @@
-﻿using DB;
+﻿using CodeFirstApi.Services.Interfaces;
+using DB;
 using Microsoft.AspNetCore.Mvc;
-using CodeFirstApi.Services.Interfaces;
 
 namespace CodeFirstApi.Controllers
 {

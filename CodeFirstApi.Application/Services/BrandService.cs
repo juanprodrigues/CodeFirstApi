@@ -1,8 +1,7 @@
-﻿using CodeFirstApi.Repositories.Interfaces;
-using CodeFirstApi.Services.Interfaces;
-using DB;
+﻿using DB;
 using Microsoft.EntityFrameworkCore;
-
+using CodeFirstApi.Services.Interfaces;
+using CodeFirstApi.Repositories.Interfaces;
 namespace CodeFirstApi.Services
 {
     public class BrandService : IBrandService

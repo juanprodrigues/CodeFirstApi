@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeFirstApi.Application\CodeFirstApi.Application.csproj" />
     <ProjectReference Include="..\DB\DB.csproj" />
   </ItemGroup>
 
@@ -32,6 +33,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
 </Project>

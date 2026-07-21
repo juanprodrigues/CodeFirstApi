@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="CodeFirstApi.Application/CodeFirstApi.Application.csproj" Id="8267db81-5f51-4aad-be18-00b2cb1eaca7" />
+  <Project Path="CodeFirstApi.Infrastructure/CodeFirstApi.Infrastructure.csproj" Id="3c33c745-6370-4add-8535-abe88f0fa89e" />
   <Project Path="CodeFirstApi/CodeFirstApi.csproj" />
   <Project Path="DB/DB.csproj" />
 </Solution>

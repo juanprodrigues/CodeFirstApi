@@ -1,7 +1,5 @@
-using CodeFirstApi.Repositories;
-using CodeFirstApi.Repositories.Interfaces;
-using CodeFirstApi.Services;
-using CodeFirstApi.Services.Interfaces;
+using CodeFirstApi.Application;
+using CodeFirstApi.Infrastructure;
 using DB;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,10 +16,9 @@ builder.Services.AddDbContext<BarContext>(options =>
         builder.Configuration.GetConnectionString("BarConnection")
     ));
 
-builder.Services.AddScoped<IBeerRepository, BeerRepository>();
-builder.Services.AddScoped<IBeerService, BeerService>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services
+    .AddApplication()
+    .AddInfrastructure();
 builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
