@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CodeFirstApi/CodeFirstApi.csproj" />
+  <Project Path="DB/DB.csproj" />
+</Solution>
