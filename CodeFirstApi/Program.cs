@@ -1,7 +1,6 @@
-using CodeFirstApi.Services;
-using CodeFirstApi.Services.Interfaces;
 using DB;
 using Microsoft.EntityFrameworkCore;
+using CodeFirstApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddApplicationServices();
+
+
 builder.Services.AddDbContext<BarContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("BarConnection")
     ));
-
-builder.Services.AddScoped<IBeerService, BeerService>();
-builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services
     .AddControllers()
     .AddJsonOptions(options =>
