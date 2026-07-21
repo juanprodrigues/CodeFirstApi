@@ -4,6 +4,7 @@ using CodeFirstApi.Services;
 using CodeFirstApi.Services.Interfaces;
 using DB;
 using Microsoft.EntityFrameworkCore;
+using Scrutor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,17 +19,32 @@ builder.Services.AddDbContext<BarContext>(options =>
         builder.Configuration.GetConnectionString("BarConnection")
     ));
 
-builder.Services.AddScoped<IBeerRepository, BeerRepository>();
-builder.Services.AddScoped<IBeerService, BeerService>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-builder.Services.AddScoped<IBrandService, BrandService>();
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler =
-            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    });
+builder.Services.Scan(scan => scan
+    .FromAssemblyOf<Program>()
+
+    .AddClasses()
+
+    .AsImplementedInterfaces()
+
+    .WithScopedLifetime()
+);
+
+//builder.Services
+//    .AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.ReferenceHandler =
+//            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+//    });
+
+builder.Services.Scan(scan => scan
+    .FromAssemblyOf<Program>()
+    .AddClasses(classes => classes.Where(type =>
+        type.Name.EndsWith("Service") ||
+        type.Name.EndsWith("Repository")))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+);
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 
 builder.WebHost.UseUrls($"http://localhost:{port}");
