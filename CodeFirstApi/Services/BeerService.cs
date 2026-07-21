@@ -1,76 +1,67 @@
-﻿using CodeFirstApi.Services.Interfaces;
+﻿using CodeFirstApi.Repositories.Interfaces;
+using CodeFirstApi.Services.Interfaces;
 using DB;
-using Microsoft.EntityFrameworkCore;
 
 namespace CodeFirstApi.Services
 {
     public class BeerService : IBeerService
     {
-        private readonly BarContext _context;
+        private readonly IBeerRepository _repository;
 
-        public BeerService(BarContext context)
+        public BeerService(IBeerRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
+
 
         public async Task<IEnumerable<Beer>> GetAllAsync()
         {
-            return await _context.Beers
-                .Include(x => x.Brand)
-                .ToListAsync();
+            return await _repository.GetAllAsync();
         }
+
 
         public async Task<Beer?> GetByIdAsync(int id)
         {
-            return await _context.Beers
-                .Include(x => x.Brand)
-                .FirstOrDefaultAsync(x => x.BeerID == id);
+            return await _repository.GetByIdAsync(id);
         }
+
 
         public async Task<Beer> AddAsync(Beer beer)
         {
-            _context.Beers.Add(beer);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(beer);
 
-            // Cargar la relación Brand para la respuesta
-            await _context.Entry(beer)
-                .Reference(x => x.Brand)
-                .LoadAsync();
-
-            return beer;
+            return await _repository.GetByIdAsync(beer.BeerID);
         }
+
 
         public async Task<Beer?> UpdateAsync(int id, Beer beer)
         {
-            var currentBeer = await _context.Beers
-                .Include(x => x.Brand)
-                .FirstOrDefaultAsync(x => x.BeerID == id);
+            var currentBeer = await _repository.GetByIdAsync(id);
 
             if (currentBeer == null)
                 return null;
 
+
             currentBeer.intName = beer.intName;
             currentBeer.BrandID = beer.BrandID;
 
-            await _context.SaveChangesAsync();
 
-            // Recargar la nueva Brand si cambió el BrandID
-            await _context.Entry(currentBeer)
-                .Reference(x => x.Brand)
-                .LoadAsync();
+            await _repository.UpdateAsync(currentBeer);
 
-            return currentBeer;
+
+            return await _repository.GetByIdAsync(id);
         }
+
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var beer = await _context.Beers.FindAsync(id);
+            var beer = await _repository.GetByIdAsync(id);
 
             if (beer == null)
                 return false;
 
-            _context.Beers.Remove(beer);
-            await _context.SaveChangesAsync();
+
+            await _repository.DeleteAsync(beer);
 
             return true;
         }
